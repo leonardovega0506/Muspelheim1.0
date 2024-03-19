@@ -54,4 +54,7 @@ public class OrdenVentaModel {
 
     @Column(name = "pay_method")
     private Integer peyMethod;
+
+    @OneToMany
+    private ClienteModel cliente;
 }

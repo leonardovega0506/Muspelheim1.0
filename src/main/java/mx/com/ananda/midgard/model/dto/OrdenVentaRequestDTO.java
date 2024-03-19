@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Getter
 @Setter
 @RequiredArgsConstructor
@@ -16,6 +19,8 @@ public class OrdenVentaRequestDTO {
     private Long docNum;
     private Double docTotal;
     private int metodoPago;
+    private LocalDate docDate;
+    private LocalTime docTime;
     private String imagen;
     private String cardCode;
     private String cardName;

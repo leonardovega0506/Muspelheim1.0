@@ -8,6 +8,8 @@ public interface IClienteService {
 
     ListClienteResponse findAll(int numPage,int sizePage, String orderBy, String sortDir);
     ListClienteResponse findAllByName(int numPage, int sizePage, String orderBy, String sortDir, String cardName);
-    ClienteResponse findClienteById(String cardCode);
+    ClienteResponse findClienteByCardCode(Integer cardCode);
+
+    ClienteResponse findClienteById(Long id);
     ListOrdenVentaResponse findOrdenVentaCliente(int numPage, int sizePage, String orderBy, String sortDir, Long idCliente);
 }

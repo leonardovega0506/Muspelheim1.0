@@ -54,5 +54,8 @@ public class ClienteModel {
 
     @Column(name = "balance_sys")
     private Double balanceSys;
+
+    @OneToMany
+    private VendedorModel vendedor;
 }
 

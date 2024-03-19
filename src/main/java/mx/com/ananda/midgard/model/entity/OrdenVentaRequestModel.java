@@ -6,6 +6,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
 @Entity
 @Table(name = "tbl_orden_request")
 @Getter
@@ -24,6 +27,12 @@ public class OrdenVentaRequestModel {
 
     @Column(name = "doc_total")
     private Double docTotal;
+
+    @Column(name = "doc_date")
+    private LocalDate docDate;
+
+    @Column(name = "doc_time")
+    private LocalTime docTime;
 
     @Column(name = "metodo_pago")
     private int metodoPago;
