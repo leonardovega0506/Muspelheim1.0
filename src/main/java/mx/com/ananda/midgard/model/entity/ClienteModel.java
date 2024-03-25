@@ -1,10 +1,13 @@
 package mx.com.ananda.midgard.model.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import javax.persistence.Entity;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_cliente")
@@ -55,7 +58,14 @@ public class ClienteModel {
     @Column(name = "balance_sys")
     private Double balanceSys;
 
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "vendedor")
     private VendedorModel vendedor;
+
+    @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
+    private List<OrdenVentaModel> ordenes;
+
+    @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
+    private List<OrdenVentaRequestModel> requests;
 }
 

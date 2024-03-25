@@ -1,6 +1,6 @@
 package mx.com.ananda.midgard.model.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -55,6 +55,14 @@ public class OrdenVentaModel {
     @Column(name = "pay_method")
     private Integer peyMethod;
 
-    @OneToMany
+    @ManyToOne
+    @JoinColumn(name = "cliente")
     private ClienteModel cliente;
+
+    @ManyToOne
+    @JoinColumn
+    private VendedorModel vendedor;
+
+    @OneToOne(mappedBy = "orden")
+    private OrdenVentaRequestModel request;
 }

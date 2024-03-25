@@ -1,6 +1,6 @@
 package mx.com.ananda.midgard.model.dto;
 
-import jakarta.persistence.Column;
+import javax.persistence.Column;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;

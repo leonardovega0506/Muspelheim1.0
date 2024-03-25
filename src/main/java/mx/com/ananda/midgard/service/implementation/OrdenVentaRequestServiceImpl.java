@@ -4,13 +4,10 @@ import mx.com.ananda.midgard.model.dto.OrdenVentaDTO;
 import mx.com.ananda.midgard.model.dto.OrdenVentaRequestDTO;
 import mx.com.ananda.midgard.model.entity.OrdenVentaModel;
 import mx.com.ananda.midgard.model.entity.OrdenVentaRequestModel;
-import mx.com.ananda.midgard.repositories.IOrdenVentaRepository;
 import mx.com.ananda.midgard.repositories.IOrdenVentaRequestRepository;
 import mx.com.ananda.midgard.response.ListOrdenSAPResponse;
-import mx.com.ananda.midgard.response.ListOrdenVentaResponse;
 import mx.com.ananda.midgard.service.interfaces.IOrdenVentaRequestService;
 import mx.com.ananda.midgard.util.MapperServiceImpl;
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +20,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class OrdenVentaRequestService implements IOrdenVentaRequestService {
+public class OrdenVentaRequestServiceImpl implements IOrdenVentaRequestService {
 
     @Autowired
     private IOrdenVentaRequestRepository iOrdenVenta;
@@ -32,8 +29,16 @@ public class OrdenVentaRequestService implements IOrdenVentaRequestService {
     private MapperServiceImpl modelMapper;
 
     @Override
-    public void LiberarOrden(OrdenVentaRequestDTO request) {
+    public void LiberarOrden(Long id) {
+       OrdenVentaRequestModel ordenBuscada= iOrdenVenta.findById(id).orElseThrow();
+       ordenBuscada.setEstatusOrden("Liberado");
+       iOrdenVenta.save(ordenBuscada);
+    }
 
+    @Override
+    public void uploadOrden(OrdenVentaRequestDTO request) {
+        request.setEstatusOrden("Cargado");
+        iOrdenVenta.save(modelMapper.mapear(request,OrdenVentaRequestModel.class));
     }
 
     @Override

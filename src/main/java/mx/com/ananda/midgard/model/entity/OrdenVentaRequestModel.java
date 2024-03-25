@@ -1,10 +1,11 @@
 package mx.com.ananda.midgard.model.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import mx.com.ananda.midgard.model.dto.VendedorDTO;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -34,6 +35,9 @@ public class OrdenVentaRequestModel {
     @Column(name = "doc_time")
     private LocalTime docTime;
 
+    @Column(name = "estatus_orden")
+    private String estatusOrden;
+
     @Column(name = "metodo_pago")
     private int metodoPago;
 
@@ -51,4 +55,15 @@ public class OrdenVentaRequestModel {
 
     @Column(name = "slp_name")
     public String slpName;
+
+    @ManyToOne
+    @JoinColumn(name = "cliente")
+    private ClienteModel cliente;
+
+    @ManyToOne
+    @JoinColumn(name = "vendedor")
+    private VendedorModel vendedor;
+
+    @OneToOne
+    private OrdenVentaModel orden;
 }

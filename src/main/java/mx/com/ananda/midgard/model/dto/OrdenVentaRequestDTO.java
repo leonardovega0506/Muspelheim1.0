@@ -1,6 +1,6 @@
 package mx.com.ananda.midgard.model.dto;
 
-import jakarta.persistence.Column;
+import javax.persistence.Column;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -22,6 +22,7 @@ public class OrdenVentaRequestDTO {
     private LocalDate docDate;
     private LocalTime docTime;
     private String imagen;
+    private String estatusOrden;
     private String cardCode;
     private String cardName;
     private String slpCode;

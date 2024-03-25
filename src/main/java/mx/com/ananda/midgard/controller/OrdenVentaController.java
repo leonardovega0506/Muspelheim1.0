@@ -6,12 +6,18 @@ import mx.com.ananda.midgard.response.ListOrdenVentaResponse;
 import mx.com.ananda.midgard.response.OrdenVentaResponse;
 import mx.com.ananda.midgard.service.interfaces.IOrdenVentaRequestService;
 import mx.com.ananda.midgard.service.interfaces.IOrdenVentaService;
+import mx.com.ananda.midgard.service.util.UploadFileService;
 import mx.com.ananda.midgard.util.GlobalConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.core.io.Resource;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 @RestController
@@ -23,6 +29,9 @@ public class OrdenVentaController {
 
     @Autowired
     private IOrdenVentaRequestService sRequest;
+
+    @Autowired
+    private UploadFileService upload;
 
     @GetMapping
     public ResponseEntity<ListOrdenVentaResponse> obtenerOrdenes(
@@ -76,9 +85,31 @@ public class OrdenVentaController {
         return new ResponseEntity<>(sOrden.findByDocNum(docNum),HttpStatus.OK);
     }
 
-    @PostMapping("/liberar-orden")
-    public ResponseEntity<String> LiberarOrden(@RequestParam OrdenVentaRequestDTO request){
-        sRequest.LiberarOrden(request);
+    @GetMapping("/imagen/{imageName}")
+    public ResponseEntity<Resource> getImage(@PathVariable String imageName) throws IOException {
+        String imageUrl = upload.getImageUrl(imageName);
+        Resource resource = new UrlResource(imageUrl);
+
+        if (resource.exists() && resource.isReadable()) {
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_JPEG)
+                    .body(resource);
+        } else {
+            return (ResponseEntity<Resource>) ResponseEntity.notFound();
+        }
+    }
+
+    @PostMapping("/subir-orden")
+    public ResponseEntity<String> subirOrden(@RequestBody OrdenVentaRequestDTO request, @RequestParam("img")MultipartFile file) throws IOException {
+        String nombre = upload.saveImage(file);
+        request.setImagen(nombre);
+        sRequest.uploadOrden(request);
+        return new ResponseEntity<>("Orden arriba",HttpStatus.OK);
+    }
+
+    @PostMapping("/liberar-orden/{idOrdenVenta}")
+    public ResponseEntity<String> liberarOrden(@PathVariable(value = "idOrdenVenta") Long idOrdenVenta){
+        sRequest.LiberarOrden(idOrdenVenta);
         return new ResponseEntity<>("Liberado",HttpStatus.OK);
     }
 
@@ -86,4 +117,6 @@ public class OrdenVentaController {
     public ResponseEntity<OrdenVentaResponse> actualizarOrden(@RequestParam long docNum, int estatus){
         return new ResponseEntity<>(sOrden.updateEstatusOrden(docNum,estatus),HttpStatus.OK);
     }
+
+
 }

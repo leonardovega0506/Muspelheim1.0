@@ -1,10 +1,12 @@
 package mx.com.ananda.midgard.model.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_vendedor")
@@ -36,5 +38,14 @@ public class VendedorModel {
 
     @Column(name = "email")
     private String email;
+
+    @OneToMany(mappedBy = "vendedor",cascade = CascadeType.ALL)
+    private List<ClienteModel> clientes;
+
+    @OneToMany(mappedBy = "vendedor",cascade = CascadeType.ALL)
+    private List<OrdenVentaModel> ordenes;
+
+    @OneToMany(mappedBy = "vendedor",cascade = CascadeType.ALL)
+    private List<OrdenVentaRequestModel> requests;
 
 }
