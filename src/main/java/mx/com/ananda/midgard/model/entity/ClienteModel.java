@@ -1,6 +1,8 @@
 package mx.com.ananda.midgard.model.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -15,6 +17,7 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @ToString
+@JsonIgnoreProperties({"cliente"})
 public class ClienteModel {
 
     @Id
@@ -23,7 +26,7 @@ public class ClienteModel {
     private Long idCliente;
 
     @Column(name = "card_code")
-    private Integer cardCode;
+    private String cardCode;
 
     @Column(name = "card_name")
     private String cardName;
@@ -47,7 +50,7 @@ public class ClienteModel {
     private Double debitLine;
 
     @Column(name = "lic_trad")
-    private String lidTadNum;
+    private String licTradNum;
 
     @Column(name = "slp_code")
     private Integer slpCode;
@@ -62,6 +65,7 @@ public class ClienteModel {
     @JoinColumn(name = "vendedor")
     private VendedorModel vendedor;
 
+    @JsonIgnoreProperties({})
     @OneToMany(mappedBy = "cliente",cascade = CascadeType.ALL)
     private List<OrdenVentaModel> ordenes;
 

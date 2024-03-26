@@ -1,6 +1,8 @@
 package mx.com.ananda.midgard.model.dto;
 
 import javax.persistence.Column;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -12,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @RequiredArgsConstructor
 @ToString
+@JsonIgnoreProperties({"cliente"})
 public class OrdenVentaDTO {
 
     private Long idOrdenVenta;

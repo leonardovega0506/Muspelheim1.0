@@ -32,7 +32,6 @@ public class SwaggerConfig {
                 .paths(PathSelectors.any())
                 .build()
                 .apiInfo(getApiInfo())
-                .pathMapping("/midgard/v1")
                 ;
     }
 

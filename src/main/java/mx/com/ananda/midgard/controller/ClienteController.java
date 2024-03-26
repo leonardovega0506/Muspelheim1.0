@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("ananda/midgard/muspelheim/cliente")
-public class ClienteController {
+public class ClienteController{
 
     @Autowired
     private IClienteService sCliente;
@@ -24,28 +24,74 @@ public class ClienteController {
             @RequestParam(value = "orderBy", defaultValue = "idCliente") String orderBy,
             @RequestParam(value = "sortDir", defaultValue = GlobalConstants.ORDENAR_DIRECCION_DEFECTO) String sortDir
     ){
-        return new ResponseEntity<>(sCliente.findAll(pageNumber,pageSize,orderBy,sortDir), HttpStatus.OK);
+        ListClienteResponse response = sCliente.findAll(pageNumber,pageSize,orderBy,sortDir);
+        if(response.getCode()==0){
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+        else if(response.getCode()==1){
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+        }
+        else{
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @GetMapping("/cardName")
     public ResponseEntity<ListClienteResponse> obtenerClientesByCardName(
-            @RequestParam(value = "pageNo", defaultValue = GlobalConstants.NUMERO_PAGINA_DEFECTO) int pageNumber,
-            @RequestParam(value = "pageSize", defaultValue = GlobalConstants.MEDIDA_PAGINA_DEFECTO) int pageSize,
-            @RequestParam(value = "orderBy", defaultValue = "idCliente") String orderBy,
-            @RequestParam(value = "sortDir", defaultValue = GlobalConstants.ORDENAR_DIRECCION_DEFECTO) String sortDir,
-            @RequestParam(value = "cardName") String cardName
+            @RequestParam String cardName
     ){
-        return new ResponseEntity<>(sCliente.findAllByName(pageNumber,pageSize,orderBy,sortDir,cardName),HttpStatus.OK);
+        ListClienteResponse response = sCliente.findAllByName(cardName);
+        if(response.getCode()==0){
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
+        else if(response.getCode()==1){
+            return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+        }
+        else if(response.getCode()==2){
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @GetMapping("/cardCode/{cardCode}")
-    public ResponseEntity<ClienteResponse> obtenerClienteByCardCode(@PathVariable(value = "cardCode") Integer cardCode){
-        return new ResponseEntity<>(sCliente.findClienteByCardCode(cardCode),HttpStatus.OK);
+    @GetMapping("/cardCode")
+    public ResponseEntity<ClienteResponse> obtenerClienteByCardCode(@RequestParam(value = "cardCode") String cardCode){
+
+        ClienteResponse response = sCliente.findClienteByCardCode(cardCode);
+
+        if(response.getCode()==0){
+
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
+        else if(response.getCode()==1){
+            return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+        }
+        else if(response.getCode()==2){
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
-    @GetMapping("/{idCliente}")
+    @GetMapping("/id/{idCliente}")
     public ResponseEntity<ClienteResponse> obtenerClienteById(@PathVariable(value = "idCliente") Long idCliente){
-        return new ResponseEntity<>(sCliente.findClienteById(idCliente),HttpStatus.OK);
+
+        ClienteResponse response = sCliente.findClienteById(idCliente);
+
+        if(response.getCode()==0){
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
+        else if(response.getCode() == 1){
+            return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+        }
+        else{
+            return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
     @GetMapping("/orden-venta/{idCliente}")
@@ -56,7 +102,20 @@ public class ClienteController {
             @RequestParam(value = "sortDir", defaultValue = GlobalConstants.ORDENAR_DIRECCION_DEFECTO) String sortDir,
             @PathVariable(value = "idCliente") Long idCliente
     ){
-        return new ResponseEntity<>(sCliente.findOrdenVentaCliente(pageNumber,pageSize,orderBy,sortDir,idCliente),HttpStatus.OK);
-    }
+        ListOrdenVentaResponse response = sCliente.findOrdenVentaCliente(pageNumber,pageSize,orderBy,sortDir,idCliente);
 
+        if(response.getCode()==0){
+            return new ResponseEntity<>(response,HttpStatus.OK);
+        }
+        else if(response.getCode()==1){
+            return new ResponseEntity<>(response,HttpStatus.NOT_FOUND);
+        }
+        else if(response.getCode() == 2){
+            return new ResponseEntity<>(response,HttpStatus.BAD_REQUEST);
+        }
+        else{
+            return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    }
 }

@@ -1,11 +1,14 @@
 package mx.com.ananda.midgard.model.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -15,6 +18,7 @@ import java.time.LocalTime;
 @Setter
 @ToString
 @RequiredArgsConstructor
+@JsonIgnoreProperties({"cliente"})
 public class OrdenVentaModel {
 
     @Id
@@ -32,10 +36,10 @@ public class OrdenVentaModel {
     private Integer objType;
 
     @Column(name = "doc_date")
-    private LocalDateTime docDate;
+    private LocalDate docDate;
 
     @Column(name = "doc_due_date")
-    private LocalDateTime docDueDate;
+    private LocalDate docDueDate;
 
     @Column(name = "card_code")
     private String cardCode;
